@@ -44,7 +44,3 @@ php cmd.php vb-resource-threads:reconcile --limit=1000
 ## Installation
 
 Upload the contents of the release zip's `upload/` directory to the XenForo installation root, then install or upgrade `[VersoBit] Resource Threads` from the XenForo Admin control panel.
-
-## Package notes
-
-Release packages should contain only add-on runtime files and XenForo XML export data. IDE metadata, development output, local plans, and old release artifacts are intentionally excluded.
