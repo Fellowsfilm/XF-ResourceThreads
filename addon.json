@@ -1,14 +1,17 @@
 {
     "legacy_addon_id": "",
     "title": "[VersoBit] Resource Threads",
-    "description": "Automatically approves/deletes threads upon resource approval/deletion.",
-    "version_id": 1000014,
-    "version_string": "1.0.0a4",
+    "description": "Synchronizes resource and resource-update discussion content during approval and deletion.",
+    "version_id": 10000170,
+    "version_string": "1.0.1",
     "dev": "VersoBit",
-    "dev_url": "https://versobit.dev",
+    "dev_url": "https://github.com/VersoBit",
     "faq_url": "",
-    "support_url": "https://support.versobit.dev",
-    "extra_urls": [],
+    "support_url": "",
+    "extra_urls": {
+        "GitHub Repo": "https://github.com/Fellowsfilm/XF-ResourceThreads",
+        "Report An Issue": "https://github.com/Fellowsfilm/XF-ResourceThreads/issues"
+    },
     "require": [],
     "icon": "fa-sticky-note"
 }

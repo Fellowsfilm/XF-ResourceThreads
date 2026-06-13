@@ -12,5 +12,6 @@ namespace VersoBit\ResourceThreads\XFRM\Service\ResourceItem
 namespace VersoBit\ResourceThreads\XFRM\Service\ResourceUpdate
 {
 	class XFCP_Approve extends \XFRM\Service\ResourceUpdate\Approve {}
+	class XFCP_Create extends \XFRM\Service\ResourceUpdate\Create {}
 	class XFCP_Delete extends \XFRM\Service\ResourceUpdate\Delete {}
 }

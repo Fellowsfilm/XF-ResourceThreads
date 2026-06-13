@@ -1,1 +1,14 @@
-[]
+{
+    "vb_resourcethreads_resource_deleted.txt": {
+        "global_cache": true,
+        "version_id": 10000170,
+        "version_string": "1.0.1",
+        "hash": "396eba6ef8ae6264186f4ec8be434ccc"
+    },
+    "vb_resourcethreads_resource_update_deleted.txt": {
+        "global_cache": true,
+        "version_id": 10000170,
+        "version_string": "1.0.1",
+        "hash": "b9cbc830815f16a2dc2eca36a9e74f75"
+    }
+}

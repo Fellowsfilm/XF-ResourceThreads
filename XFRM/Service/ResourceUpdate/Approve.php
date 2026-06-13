@@ -2,32 +2,36 @@
 
 namespace VersoBit\ResourceThreads\XFRM\Service\ResourceUpdate;
 
+use VersoBit\ResourceThreads\Repository\UpdatePost;
+use XFRM\Entity\ResourceUpdate;
+
 class Approve extends XFCP_Approve
 {
     protected function onApprove()
     {
-        parent::onApprove();
+        $return = parent::onApprove();
 
-        $update = $this->update;
+        if ($return !== false)
+        {
+            $this->approveDiscussionThreadPost($this->update);
+        }
 
-        $this->approveDiscussionThreadPost($update);
+        return $return;
     }
 
-    protected function approveDiscussionThreadPost($update)
+    protected function approveDiscussionThreadPost(ResourceUpdate $update)
     {
-        // TODO: find more solid way of finding the update's post in discussion thread
-        $updateUrl = '%resources/'. strtolower($update->title) .'.'. $update->Resource->resource_id .'/update/'. $update->resource_update_id .'/%';
-        $post = \XF::finder('XF:Post')->where([
-            'thread_id' => $update->Resource->discussion_thread_id,
-            'user_id' => $update->Resource->user_id,
-            ['message', 'LIKE', $updateUrl]
-        ])->fetchOne();
+        /** @var UpdatePost $updatePostRepo */
+        $updatePostRepo = \XF::repository('VersoBit\ResourceThreads:UpdatePost');
+        $post = $updatePostRepo->resolvePostForUpdate($update);
 
-        // Approve resource update's associated post if unapproved
-        if($post AND $post->message_state == 'moderated'){
-            /** @var \XF\Service\Post\Approver $postApprover */
-            $postApprover = \XF::service('XF:Post\Approver', $post);
-            $postApprover->approve();
+        if (!$post || $post->message_state !== 'moderated')
+        {
+            return;
         }
+
+        /** @var \XF\Service\Post\Approver $postApprover */
+        $postApprover = \XF::service('XF:Post\Approver', $post);
+        $postApprover->approve();
     }
 }

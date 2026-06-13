@@ -2,34 +2,36 @@
 
 namespace VersoBit\ResourceThreads\XFRM\Service\ResourceUpdate;
 
+use VersoBit\ResourceThreads\Repository\UpdatePost;
+use XFRM\Entity\ResourceUpdate;
+
 class Delete extends XFCP_Delete
 {
     public function delete($type, $reason = '')
     {
         $result = parent::delete($type, $reason);
 
-        $update = $this->update;
-
-        $this->deleteDiscussionThreadPost($update);
+        if ($result)
+        {
+            $this->deleteDiscussionThreadPost($this->update);
+        }
 
         return $result;
     }
 
-    protected function deleteDiscussionThreadPost($update)
+    protected function deleteDiscussionThreadPost(ResourceUpdate $update)
     {
-        // TODO: find more solid way of finding the update's post in discussion thread
-        $updateUrl = '%resources/'. strtolower($update->title) .'.'. $update->Resource->resource_id .'/update/'. $update->resource_update_id .'/%';
-        $post = \XF::finder('XF:Post')->where([
-            'thread_id' => $update->Resource->discussion_thread_id,
-            'user_id' => $update->Resource->user_id,
-            ['message', 'LIKE', $updateUrl]
-        ])->fetchOne();
+        /** @var UpdatePost $updatePostRepo */
+        $updatePostRepo = \XF::repository('VersoBit\ResourceThreads:UpdatePost');
+        $post = $updatePostRepo->resolvePostForUpdate($update);
 
-        // Delete resource update's post if unapproved
-        if($post AND $post->message_state == 'moderated'){
-            /** @var \XF\Service\Post\Deleter $postDeleter */
-            $postDeleter = $this->service('XF:Post\Deleter', $post);
-            $postDeleter->delete('soft', \XF::phrase('xfrm_resource_update').' deleted');
+        if (!$post || $post->message_state !== 'moderated')
+        {
+            return;
         }
+
+        /** @var \XF\Service\Post\Deleter $postDeleter */
+        $postDeleter = $this->service('XF:Post\Deleter', $post);
+        $postDeleter->delete('soft', \XF::phrase('vb_resourcethreads_resource_update_deleted'));
     }
 }

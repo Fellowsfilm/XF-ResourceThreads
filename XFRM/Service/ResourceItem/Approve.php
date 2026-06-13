@@ -2,24 +2,42 @@
 
 namespace VersoBit\ResourceThreads\XFRM\Service\ResourceItem;
 
+use XFRM\Entity\ResourceItem;
+
 class Approve extends XFCP_Approve
 {
     protected function onApprove()
     {
-        parent::onApprove();
+        $return = parent::onApprove();
 
-        $resource = $this->resource;
+        if ($return !== false)
+        {
+            $this->approveDiscussionThread($this->resource);
+        }
 
-        $this->approveDiscussionThread($resource);
+        return $return;
     }
 
-    protected function approveDiscussionThread($resource)
+    protected function approveDiscussionThread(ResourceItem $resource)
     {
-        // Approve resource's associated thread if unapproved
-        if($resource->Discussion->discussion_state == 'moderated'){
-            /** @var \XF\Service\Thread\Approver $threadApprover */
-            $threadApprover = \XF::service('XF:Thread\Approver', $resource->Discussion);
-            $threadApprover->approve();
+        $thread = $this->getResourceDiscussionThread($resource);
+        if (!$thread || $thread->discussion_state !== 'moderated')
+        {
+            return;
         }
+
+        /** @var \XF\Service\Thread\Approver $threadApprover */
+        $threadApprover = \XF::service('XF:Thread\Approver', $thread);
+        $threadApprover->approve();
+    }
+
+    protected function getResourceDiscussionThread(ResourceItem $resource): ?\XF\Entity\Thread
+    {
+        if (!$resource->discussion_thread_id)
+        {
+            return null;
+        }
+
+        return $resource->Discussion ?: null;
     }
 }

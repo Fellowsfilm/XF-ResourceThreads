@@ -3,5 +3,6 @@
   <extension from_class="XFRM\Service\ResourceItem\Approve" to_class="VersoBit\ResourceThreads\XFRM\Service\ResourceItem\Approve" execute_order="10" active="1"/>
   <extension from_class="XFRM\Service\ResourceItem\Delete" to_class="VersoBit\ResourceThreads\XFRM\Service\ResourceItem\Delete" execute_order="10" active="1"/>
   <extension from_class="XFRM\Service\ResourceUpdate\Approve" to_class="VersoBit\ResourceThreads\XFRM\Service\ResourceUpdate\Approve" execute_order="10" active="1"/>
+  <extension from_class="XFRM\Service\ResourceUpdate\Create" to_class="VersoBit\ResourceThreads\XFRM\Service\ResourceUpdate\Create" execute_order="10" active="1"/>
   <extension from_class="XFRM\Service\ResourceUpdate\Delete" to_class="VersoBit\ResourceThreads\XFRM\Service\ResourceUpdate\Delete" execute_order="10" active="1"/>
 </class_extensions>
